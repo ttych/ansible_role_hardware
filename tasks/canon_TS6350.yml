@@ -1,0 +1,102 @@
+---
+
+- block:
+
+    - block:
+
+        - name: check cnijfilter2 installed
+          shell:
+            cmd: dpkg -s cnijfilter2
+          changed_when: no
+          failed_when: no
+          register: t_hardware_canon_TS6350_cnijfilter2_check
+
+        - name: check scangearmp2 installed
+          shell:
+            cmd: dpkg -s scangearmp2
+          changed_when: no
+          failed_when: no
+          register: t_hardware_canon_TS6350_scangearmp2_check
+
+        - name: canon dist
+          file:
+            path: "{{ hardware_canon_dist }}"
+            owner: root
+            group: "{{ root_group }}"
+            mode: "0755"
+            state: directory
+
+        - block:
+            - name: tmp cnijfilter2 dir
+              file:
+                path: "/tmp/{{ hardware_canon_TS6350_cnijfilter2_name }}"
+                owner: root
+                group: "{{ root_group }}"
+                mode: "0700"
+                state: directory
+
+            - name: download cnijfilter2 archive
+              get_url:
+                url: "{{ hardware_canon_TS6350_cnijfilter2_url }}"
+                dest: "/tmp/{{ hardware_canon_TS6350_cnijfilter2_name }}/{{ hardware_canon_TS6350_cnijfilter2_archive }}"
+                mode: "0644"
+
+            - name: extract cnijfilter2 archive
+              unarchive:
+                src: "/tmp/{{ hardware_canon_TS6350_cnijfilter2_name }}/{{ hardware_canon_TS6350_cnijfilter2_archive }}"
+                dest: "{{ hardware_canon_dist }}"
+                remote_src: yes
+
+            - name: install cnijfilter2
+              command:
+                cmd: "dpkg -i {{ hardware_canon_dist }}/{{ hardware_canon_TS6350_cnijfilter2_name }}/packages/cnijfilter2_{{ hardware_canon_TS6350_cnijfilter2_version }}_{{ (ansible_userspace_bits == '64') | ternary('amd64', 'i386') }}.deb"
+
+            # sudo /usr/sbin/lpadmin -p TS6300LAN -P /usr/share/cups/model/canonts6300.ppd -v cnijbe2://Canon/?port=net&serial=XX-XX-XX-XX-XX-XX -E
+            # default printer ?
+
+            - name: clean cnijfilter2 archive
+              file:
+                path: "/tmp/{{ hardware_canon_TS6350_cnijfilter2_name }}"
+                state: absent
+
+          when: t_hardware_canon_TS6350_cnijfilter2_check.rc != 0
+
+        - block:
+            - name: tmp scangearmp2 dir
+              file:
+                path: "/tmp/{{ hardware_canon_TS6350_scangearmp2_name }}"
+                owner: root
+                group: "{{ root_group }}"
+                mode: "0700"
+                state: directory
+
+            - name: download scangearmp2
+              get_url:
+                url: "{{ hardware_canon_TS6350_scangearmp2_url }}"
+                dest: "/tmp/{{ hardware_canon_TS6350_scangearmp2_name }}/{{ hardware_canon_TS6350_scangearmp2_archive }}"
+                mode: "0644"
+
+            - name: extract scangearmp2 archive
+              unarchive:
+                src: "/tmp/{{ hardware_canon_TS6350_scangearmp2_name }}/{{ hardware_canon_TS6350_scangearmp2_archive }}"
+                dest: "/tmp/{{ hardware_canon_TS6350_scangearmp2_name }}"
+                remote_src: yes
+
+            - name: install scangearmp2
+              command:
+                cmd: "/tmp/{{ hardware_canon_TS6350_scangearmp2_name }}/{{ hardware_canon_TS6350_scangearmp2_name }}/install.sh"
+
+            - name: clean scangearmp2 archive
+              file:
+                path: "/tmp/{{ hardware_canon_TS6350_scangearmp2_name }}"
+                state: absent
+
+          when: t_hardware_canon_TS6350_scangearmp2_check.rc != 0
+
+      when: ansible_os_family == 'Debian'
+
+  when: want_hardware_canon_TS6350
+
+- name: set has_hardware_canon_TS6350
+  set_fact:
+    has_hardware_canon_TS6350: "{{ want_hardware_canon_TS6350 }}"

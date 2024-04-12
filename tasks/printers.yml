@@ -1,0 +1,17 @@
+---
+
+- name: install cups
+  package:
+    name: "{{ hardware_printers_cups_packages }}"
+    state: present
+  register: t_hardware_printers_cups_install
+
+- name: service cups
+  service:
+    name: "{{ hardware_printers_cups_service }}"
+    enabled: yes
+    state: started
+  register: t_hardware_printers_cups_service
+
+
+- include_tasks: canon_TS6350.yml

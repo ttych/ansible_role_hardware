@@ -1,0 +1,6 @@
+---
+
+hardware_printers_cups_packages:
+  - cups
+
+hardware_printers_cups_service: cups

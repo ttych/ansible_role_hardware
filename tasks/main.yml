@@ -1,0 +1,9 @@
+---
+
+- block:
+    - include_tasks: context.yml
+
+    - include_tasks: linux_info.yml
+
+
+    - include_tasks: printers.yml

@@ -1,0 +1,10 @@
+---
+
+- block:
+    - name: lspci
+      command:
+        cmd: lspci
+      register: t_hardware_lscpi
+      changed_when: no
+
+  when: ansible_system == "Linux"
