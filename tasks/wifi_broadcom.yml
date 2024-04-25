@@ -1,0 +1,14 @@
+---
+
+- block:
+
+    - block:
+        - name: install broadcom bcmwl drivers
+          package:
+            name: "{{ hardware_broadcom_bcmwl }}"
+            state: present
+
+      when:
+        - '"Network controller: Broadcom Inc. and subsidiaries BCM43" in t_hardware_lscpi.stdout'
+
+  when: ansible_system == "Linux"
