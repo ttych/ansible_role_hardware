@@ -2,5 +2,6 @@
 
 hardware_printers_cups_packages:
   - cups
+  - libcupsimage2
 
 hardware_printers_cups_service: cups
