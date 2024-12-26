@@ -3,9 +3,9 @@
 - block:
 
     - block:
-        - name: install broadcom bcmwl drivers
+        - name: install broadcom bcm43 drivers
           package:
-            name: "{{ hardware_broadcom_bcmwl }}"
+            name: "{{ hardware_broadcom_bcm43 }}"
             state: present
 
       when:

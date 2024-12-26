@@ -1,0 +1,4 @@
+---
+
+broadcom_bcm43_packages:
+  - broadcom-sta-dkms
