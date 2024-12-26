@@ -13,4 +13,3 @@ hardware_canon_TS6350_cnijfilter2_version: "{{ hardware_canon_TS6350_cnijfilter2
 hardware_canon_TS6350_scangearmp2_url: https://gdlp01.c-wss.com/gds/5/0100010485/01/scangearmp2-3.90-1-deb.tar.gz
 hardware_canon_TS6350_scangearmp2_archive: "{{ hardware_canon_TS6350_scangearmp2_url.split('/')[-1] }}"
 hardware_canon_TS6350_scangearmp2_name: "{{ hardware_canon_TS6350_scangearmp2_archive | regex_replace('\\.tar\\.gz$', '') }}"
-
